@@ -3,5 +3,5 @@ framework:
     rate_limiter:
         login_rate_limiter:
             policy: 'fixed_window'
-            limit: 3
-            interval: '10 minutes'
+            limit: 5
+            interval: '2 minutes'
