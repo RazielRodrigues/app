@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Security;
+namespace App\Security\Checker;
 
 use App\Entity\User as AppUser;
 use App\Enum\StatusEnum;
-use Symfony\Component\Security\Core\Exception\AccountExpiredException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAccountStatusException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -24,9 +23,8 @@ class UserChecker implements UserCheckerInterface
             return;
         }
 
-        // user account is expired, the user may be notified
         if ($user->getStatus() === StatusEnum::BLOCKED) {
-            throw new AccountExpiredException('BLOQUEADO');
+            throw new CustomUserMessageAccountStatusException('Your user is blocked, contact your admin to unblock.');
         }
     }
 }

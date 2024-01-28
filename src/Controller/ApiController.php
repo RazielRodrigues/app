@@ -5,12 +5,13 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class SongController extends AbstractController
+class ApiController extends AbstractController
 {
 
-    #[Route('api/song/{id<\d+>}', name: 'app_song_getsong', methods: 'GET')]
+    #[Route('/api/song/{id<\d+>}', name: 'app_api_get_song', methods: 'GET')]
     public function song(int $id)
     {
+        # TODO: GET FROM DATABASE
         return $this->json([
             'id' => $id,
             'name' => 'Initial Minimal Techno',

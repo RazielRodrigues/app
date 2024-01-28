@@ -1,2 +1,2 @@
-"Invalid credentials.": "Invalid data entered!"
-"Too many failed login attempts, please try again in %minutes% minute.": 'Now you are blocked! You need to contact an admin!'
+"Invalid credentials.": "Wrong password or email."
+"Too many failed login attempts, please try again in %minutes% minute.": 'Your user has been blocked, contact your admin for further information.'

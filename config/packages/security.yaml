@@ -19,19 +19,17 @@ security:
 
             lazy: true
             provider: app_user_provider
+            user_checker: App\Security\Checker\UserChecker
+            access_denied_handler: App\Security\Handler\AccessDeniedHandler
             form_login:
                 login_path: app_login
                 check_path: app_login
                 enable_csrf: true
-            entry_point: form_login
-            user_checker: App\Security\UserChecker
 
-            #custom_authenticators:
-            #    - App\Security\MainAuthenticator
             logout:
                 path: app_logout
-                # where to redirect after logout
                 target: app_login
+
             login_throttling:
                 limiter: app.login_rate
 
