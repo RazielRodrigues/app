@@ -1,0 +1,8 @@
+services:
+    # our custom login rate limiter
+    app.login_rate_limiter:
+        class: Symfony\Component\Security\Http\RateLimiter\DefaultLoginRateLimiter
+        arguments:
+            $globalFactory: '@limiter.login_rate_limiter'
+            $localFactory: '@limiter.login_rate_limiter'
+            $secret: '%kernel.secret%'

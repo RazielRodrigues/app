@@ -1,0 +1,37 @@
+<nav class="navbar navbar-expand-lg navbar-dark mb-5" style="background-color: #27333A;">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{{ path('app_home') }}">
+      <i class="fas fa-fire"></i>
+      Harmonius
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" style="margin-top: 20px;" href="{{ path('app_play') }}">Play Mixes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" style="margin-top: 20px;" href="{{ path('app_browse') }}">Browse Mixes</a>
+        </li>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') == false %}
+          <!-- Not Authenticated -->
+          <li class="nav-item">
+            <a class="btn btn-outline-info" style="margin-top: 20px;" href="{{ path('app_login') }}">Login</a>
+          </li> <!-- End Not Authenticated -->
+        {% else %}
+          <!-- If Authenticated -->
+          <li class="nav-item">
+            <a class="nav-link" style="margin-top: 20px;" href="{{ path('app_user_show', { id: app.user.id }) }}">My Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" style="margin-top: 20px;" href="{{ path('app_user_mixes') }}">My Mixes</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-outline-info" style="margin-top: 20px;" href="{{ path('app_logout') }}">Signout</a>
+          </li>
+          <!-- End If Authenticated -->
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

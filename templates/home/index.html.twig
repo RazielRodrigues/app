@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  Home ! {{ parent() }}
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+    <div>
+      <h2 class="mt-5">About the project</h2>
+      <div class="row">
+        <div class="col col-md-12">
+          <p class="lead">I created this project as a way to express my love for music and coding, the objective here is to share my music using a system created by myself, hope you enjoy both of my passions in my life :)</p>
+          <div class="mixed-vinyl-container p-3 text-center">
+            <img class="img-fluid w-25 rounded" src="{{ asset('raziel.jpg') }}" data-src="{{ asset('raziel.jpg') }}" alt="Square placeholder img" />
+            <p class="mt-2">
+              <strong>Raziel Rodrigues</strong>
+            </p>
+            <span>Software engineer and music lover</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
