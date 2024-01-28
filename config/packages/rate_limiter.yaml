@@ -1,7 +1,7 @@
 # config/packages/rate_limiter.yaml
 framework:
     rate_limiter:
-        login_rate_limiter:
+        login_rate:
             policy: 'fixed_window'
             limit: 5
             interval: '2 minutes'

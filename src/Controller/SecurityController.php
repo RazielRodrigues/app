@@ -2,29 +2,54 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Enum\StatusEnum;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
     #[Route(path: '/login', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
-    {
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
+    public function login(
+        AuthenticationUtils $authenticationUtils,
+        RateLimiterFactory  $loginRateLimiter,
+        UserRepository $userRepository,
+        EntityManagerInterface $entityManagerInterface
+    ): Response {
 
-        // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-
-        return $this->render('security/login.html.twig', [
-            'last_username' => $lastUsername,
-            'error' => $error,
+        $user = $userRepository->findOneBy([
+            'email' => $lastUsername
         ]);
+
+        $error = $authenticationUtils->getLastAuthenticationError();
+        $response = [
+            'last_username' => $lastUsername,
+            'error' => $error
+        ];
+
+        if ($user?->getStatus() === StatusEnum::BLOCKED) {
+            $response['blocked'] = 'Blocked needs to talk with the admin!';
+            return $this->render('security/login.html.twig', $response);
+        }
+
+        # TODO MOVE TO THE EVENT LISTENER
+        $limiter = $loginRateLimiter->create($lastUsername);
+        if ($user && $limiter->consume(1)->isAccepted() === false) {
+            $user->setStatus(StatusEnum::BLOCKED);
+            $entityManagerInterface->persist($user);
+            $entityManagerInterface->flush();
+        };
+
+        return $this->render('security/login.html.twig', $response);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]
@@ -36,11 +61,11 @@ class SecurityController extends AbstractController
     // if you're using service autowiring, the variable name must be:
     // "rate limiter name" (in camelCase) + "Limiter" suffix
     #[Route(path: '/rate', name: 'app_rate')]
-    public function index(Request $request, RateLimiterFactory $anonymousApiLimiter): Response
+    public function indexw(Request $request, RateLimiterFactory  $loginRateLimiter): Response
     {
         // create a limiter based on a unique identifier of the client
         // (e.g. the client's IP address, a username/email, an API key, etc.)
-        $limiter = $anonymousApiLimiter->create($request->getClientIp());
+        $limiter = $loginRateLimiter->create($request->getClientIp());
 
         // the argument of consume() is the number of tokens to consume
         // and returns an object of type Limit
