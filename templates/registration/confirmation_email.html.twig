@@ -1,1 +1,15 @@
-<h1>Hi! Please confirm your email!</h1>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HARMONIUS | EMAIL CONFIRMATION</title>
+  </head>
+  <body>
+    <center>
+      <h1>Hi! Please confirm your email!</h1>
+      <h4>This link is valid por 180 seconds :)</h4>
+      <a href="{{ url('app_verify_email', { id: id }) }}">CLICK HERE</a>
+    </center>
+  </body>
+</html>

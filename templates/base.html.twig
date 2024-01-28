@@ -23,6 +23,15 @@
   </head>
   <body>
     {{ include('header.html.twig') }}
+
+    {% for flash_error in app.flashes('error') %}
+      <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+
+    {% for flash_success in app.flashes('success') %}
+      <div class="alert alert-success" role="alert">{{ flash_success }}</div>
+    {% endfor %}
+
     <main class="container">
       {% block body %}
 

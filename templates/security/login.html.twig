@@ -9,14 +9,6 @@
     {% if error %}
       <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
-    {% if blocked is defined %}
-      <div class="alert alert-danger">{{ blocked }}</div>
-    {% endif %}
-    {% if app.user %}
-      <div class="mb-3">
-        You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-      </div>
-    {% endif %}
 
     <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
     <label for="username">Email</label>
@@ -37,6 +29,9 @@
             </div>
         #}
 
-    <button class="btn btn-lg btn-primary" type="submit">Sign in</button>
+    <div class="m-2">
+      <button class="btn btn-outline-primary" type="submit">Sign in</button>
+      <a class="btn btn-outline-primary" href="{{ path('app_register') }}">Register</a>
+    </div>
   </form>
 {% endblock %}
