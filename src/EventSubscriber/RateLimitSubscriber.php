@@ -33,18 +33,24 @@ class RateLimitSubscriber implements EventSubscriberInterface
         }
 
         $limiter = $this->loginRateLimiter->create($event->getRequest()->getClientIp());
+        $consumer = $limiter->consume(1);
 
         $user = $this->userRepository->findOneBy([
             'email' => $lastUsername
         ]);
 
-        $limiter = $this->loginRateLimiter->create($lastUsername);
+        if ($user?->getStatus() == StatusEnum::BLOCKED) {
+            return;
+        }
 
-        if ($user && $limiter->consume(1)->isAccepted() === false) {
+        $limiter = $this->loginRateLimiter->create($lastUsername);
+        if (!$limiter->consume(1)->isAccepted() && $user) {
             $user->setStatus(StatusEnum::BLOCKED);
             $this->entityManagerInterface->persist($user);
             $this->entityManagerInterface->flush();
         };
+
+        dump($consumer->getRemainingTokens(), $consumer->getRetryAfter());
     }
 
     public static function getSubscribedEvents(): array
