@@ -45,7 +45,7 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation(
+            /*             $this->emailVerifier->sendEmailConfirmation(
                 'app_verify_email',
                 $user,
                 (new TemplatedEmail())
@@ -56,7 +56,7 @@ class RegistrationController extends AbstractController
                     ->context([
                         'id' => $user->getId(),
                     ])
-            );
+            ); */
 
             return $this->redirectToRoute('app_login');
         }

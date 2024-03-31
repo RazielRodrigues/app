@@ -12,6 +12,7 @@ class UserVoter extends Voter
 {
     public const EDIT = 'USER_EDIT';
     public const VIEW = 'USER_VIEW';
+    public const ENVIAR_PAGAMENTO = 'ENVIAR_PAGAMENTO';
 
     public function __construct(private Security $security)
     {
@@ -20,8 +21,7 @@ class UserVoter extends Voter
     protected function supports(string $attribute, mixed $subject): bool
     {
 
-        // if the attribute isn't one we support, return false
-        if (!in_array($attribute, [self::VIEW, self::EDIT])) {
+        if (!in_array($attribute, [self::VIEW, self::EDIT, self::ENVIAR_PAGAMENTO])) {
             return false;
         }
 
@@ -41,21 +41,19 @@ class UserVoter extends Voter
             return false;
         }
 
-        if ($this->security->isGranted('ROLE_ADMIN')) {
-            return true;
-        }
-
         /** @var User $userEdited */
         $userEdited = $subject;
 
         return match ($attribute) {
-            self::EDIT => $this->canEdit($userEdited, $user),
-            self::VIEW => $this->canView($userEdited, $user),
+            self::ENVIAR_PAGAMENTO => $this->podePagarFuncionarios($userEdited, $user),
             default => new \Exception('code not to be reached')
         };
     }
 
-
+    private function podePagarFuncionarios($userEdited, $user)
+    {
+        return $this->security->isGranted('ROLE_ADMIN');
+    }
     private function canEdit($userEdited, $user)
     {
         return $userEdited->getId() === $user->getId();

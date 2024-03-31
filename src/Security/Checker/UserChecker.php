@@ -23,8 +23,8 @@ class UserChecker implements UserCheckerInterface
             return;
         }
 
-        if ($user->getStatus() === StatusEnum::BLOCKED) {
+        /*         if ($user->getStatus() === StatusEnum::BLOCKED) {
             throw new CustomUserMessageAccountStatusException('Your user is blocked, contact your admin to unblock.');
-        }
+        } */
     }
 }

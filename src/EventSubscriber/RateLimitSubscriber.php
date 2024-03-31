@@ -50,7 +50,8 @@ class RateLimitSubscriber implements EventSubscriberInterface
             $this->entityManagerInterface->flush();
         };
 
-        dump($consumer->getRemainingTokens(), $consumer->getRetryAfter());
+        /*         dump($consumer->getRemainingTokens(), $consumer->getRetryAfter());
+ */
     }
 
     public static function getSubscribedEvents(): array

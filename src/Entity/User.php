@@ -27,7 +27,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $password;
 
     #[ORM\Column(type: 'boolean')]
-    private $isVerified = false;
+    private $isVerified = true;
 
     #[ORM\Column(type: 'smallint')]
     private $status = 0;
